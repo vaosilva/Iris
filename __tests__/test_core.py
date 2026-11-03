@@ -1,5 +1,7 @@
 import asyncio
 import json
+import subprocess
+import sys
 from unittest import mock
 
 import pytest
@@ -25,6 +27,21 @@ TRACK_URI = Uri(
 ARTIST_URI = Uri("local:artist:md5:6ec7c3ea99066873f56b934898833252")
 ALBUM_URI = Uri("local:album:md5:8fecdcd0b82e56b8da13f15802be071f")
 IMAGE_URI = Uri("/local/d62765b1670faf4e2456e9e62bf071e3-1200x1200.jpeg")
+
+
+def _fresh_interpreter(code):
+    """Run code in a clean interpreter, isolated from this process's imports"""
+    return subprocess.run(
+        [sys.executable, "-c", code], capture_output=True, text=True
+    )
+
+
+def test_get_version_resolves_packaging_version():
+    result = _fresh_interpreter(
+        "import mopidy_iris.core, packaging; packaging.version.parse('3.70.0')"
+    )
+
+    assert result.returncode == 0, result.stderr
 
 
 def test_update_snapcast_meta_serializes_mopidy4_models_to_json():

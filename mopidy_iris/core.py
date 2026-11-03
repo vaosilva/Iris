@@ -9,7 +9,7 @@ import sys
 import tornado.web
 import tornado.ioloop
 import time
-import packaging
+import packaging.version
 import pickle
 from tornado.escape import json_encode
 from tornado.httpclient import AsyncHTTPClient, HTTPRequest
