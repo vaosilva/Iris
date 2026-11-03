@@ -1178,12 +1178,14 @@ class IrisCore(pykka.ThreadingActor):
             # We use different serialization methods depending on the Mopidy version
             if MOPIDY_V4:
                 # Mopidy v4+ uses Pydantic models with .model_dump()
-                track_data = track.model_dump()
+                track_data = track.model_dump(mode="json")
                 images_result = self.core.library.get_images([track_data["uri"]]).get()
                 if images_result and track_data["uri"] in images_result:
                     images = images_result[track_data["uri"]]
                     # Images in Mopidy v4 are a list of Image objects
-                    meta["images"] = [img.model_dump() for img in images]
+                    meta["images"] = [
+                        img.model_dump(mode="json") for img in images
+                    ]
             else:
                 # Older versions use the legacy ModelJSONEncoder:
                 # Convert the Track to JSON, but to make it a response-ready JSON we need to load it.
