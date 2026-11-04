@@ -38,7 +38,8 @@ def _fresh_interpreter(code):
 
 def test_get_version_resolves_packaging_version():
     result = _fresh_interpreter(
-        "import mopidy_iris.core, packaging; packaging.version.parse('3.70.0')"
+        "import mopidy_iris.core, packaging; "
+        "packaging.version.parse(mopidy_iris.core.Extension.version)"
     )
 
     assert result.returncode == 0, result.stderr
