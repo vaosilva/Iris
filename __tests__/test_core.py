@@ -45,7 +45,7 @@ def test_get_version_resolves_packaging_version():
     assert result.returncode == 0, result.stderr
 
 
-def test_update_snapcast_meta_serializes_mopidy4_models_to_json():
+def test_update_snapcast_meta_accepts_mopidy_pydantic_models():
     if not core_lib.MOPIDY_V4:
         pytest.skip("requires Mopidy 4 pydantic models")
 
